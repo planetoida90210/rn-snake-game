@@ -5,6 +5,7 @@ import { Colors } from "../styles/colors";
 
 //external imports
 import { Coordinate, Direction, GestureEventType } from "../types/types";
+import { checkGameOver } from "../utils/checkGameOver";
 import Snake from "./Snake";
 
 const SNAKE_INITIAL_POSITION = [{ x: 5, y: 5 }];
@@ -34,6 +35,10 @@ export default function Game(): JSX.Element {
     const newHead = { ...snakeHead }; //creating copy of snake
 
     // game over
+    if (checkGameOver(snakeHead, GAME_BOUNDS)) {
+      setIsGameOver((prev) => !prev);
+      return;
+    }
 
     switch (direction) {
       case Direction.Up:
@@ -51,6 +56,9 @@ export default function Game(): JSX.Element {
       default:
         break;
     }
+
+    // if eats food
+    // grow snake
 
     setSnake([newHead, ...snake.slice(0, -1)]);
   };
