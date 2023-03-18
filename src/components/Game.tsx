@@ -4,7 +4,7 @@ import { PanGestureHandler } from "react-native-gesture-handler";
 import { Colors } from "../styles/colors";
 
 //external imports
-import { GestureEventType } from "../types/types";
+import { Coordinate, Direction, GestureEventType } from "../types/types";
 
 const SNAKE_INITIAL_POSITION = [{ x: 5, y: 5 }];
 const FOOD_INITIAL_POSITION = { x: 5, y: 20 };
@@ -13,19 +13,33 @@ const MOVE_INTERVAL = 50;
 const SCORE_INCREMENT = 10;
 
 export default function Game(): JSX.Element {
+  const [direction, setDirection] = React.useState<Direction>(Direction.Right);
+  const [snake, setSnake] = React.useState<Coordinate[]>(SNAKE_INITIAL_POSITION);
+  const [food, setFood] = React.useState<Coordinate>(FOOD_INITIAL_POSITION);
+  const [isGameOver, setIsGameOver] = React.useState<boolean>(false);
+  const [isPaused, setIsPaused] = React.useState<boolean>(false);
+
   const handleGesture = (event: GestureEventType) => {
     const { translationX, translationY } = event.nativeEvent;
     if (Math.abs(translationX) > Math.abs(translationY)) {
       if (translationX > 0) {
         // moving right
+
+        setDirection(Direction.Right);
       } else {
         // moving left
+
+        setDirection(Direction.Left);
       }
     } else {
       if (translationY > 0) {
         // moving down
+
+        setDirection(Direction.Down);
       } else {
         // moving up
+
+        setDirection(Direction.Up);
       }
     }
   };
