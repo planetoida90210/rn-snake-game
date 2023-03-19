@@ -5,6 +5,7 @@ import { Colors } from "../styles/colors";
 
 //external imports
 import { Coordinate, Direction, GestureEventType } from "../types/types";
+import { checkEatsFood } from "../utils/checkEatsFood";
 import { checkGameOver } from "../utils/checkGameOver";
 import Food from "./Food";
 import Snake from "./Snake";
@@ -60,6 +61,10 @@ export default function Game(): JSX.Element {
 
     // if eats food
     // grow snake
+    if (checkEatsFood(newHead, food, 2)) {
+      setSnake([newHead, ...snake]);
+      //get another position of food
+    }
 
     setSnake([newHead, ...snake.slice(0, -1)]);
   };
