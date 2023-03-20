@@ -7,6 +7,7 @@ import { Colors } from "../styles/colors";
 import { Coordinate, Direction, GestureEventType } from "../types/types";
 import { checkEatsFood } from "../utils/checkEatsFood";
 import { checkGameOver } from "../utils/checkGameOver";
+import { randomFoodPosition } from "../utils/randomFoodPosition";
 import Food from "./Food";
 import Snake from "./Snake";
 
@@ -22,6 +23,7 @@ export default function Game(): JSX.Element {
   const [food, setFood] = React.useState<Coordinate>(FOOD_INITIAL_POSITION);
   const [isGameOver, setIsGameOver] = React.useState<boolean>(false);
   const [isPaused, setIsPaused] = React.useState<boolean>(false);
+  const [score, setScore] = React.useState<number>(0);
 
   React.useEffect(() => {
     if (!isGameOver) {
@@ -62,11 +64,16 @@ export default function Game(): JSX.Element {
     // if eats food
     // grow snake
     if (checkEatsFood(newHead, food, 2)) {
-      setSnake([newHead, ...snake]);
       //get another position of food
-    }
+      setFood(randomFoodPosition(GAME_BOUNDS.xMax, GAME_BOUNDS.yMax));
 
-    setSnake([newHead, ...snake.slice(0, -1)]);
+      setSnake([newHead, ...snake]);
+
+      // increrment the score
+      setScore(score + SCORE_INCREMENT);
+    } else {
+      setSnake([newHead, ...snake.slice(0, -1)]);
+    }
   };
 
   const handleGesture = (event: GestureEventType) => {
